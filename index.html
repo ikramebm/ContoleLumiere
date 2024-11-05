@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    
+    <title>Contrôle de lumière</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        button {
+            padding: 20px 40px;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 50px;
+            color: white;
+            background-color: #1fa159;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Contrôle de lumière</h1>
+    <button id="lightControlButton" onclick="toggleLight()">Allumer</button>
+
+    <script>
+        let lightOn = false; // état initial 
+
+        function toggleLight() { 
+            document.getElementById("lightControlButton").innerText = lightOn ? "Éteindre" : "Allumer";
+            const esp32Url = `http://X.X.X.X/${lightOn ? 'on' : 'off'}`;
+
+            // Envoie une requête HTTP GET pour allumer/éteindre la LED
+            fetch(esp32Url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erreur de requête");
+                    }
+                    console.log(`Lumière ${lightOn ? 'allumée' : 'éteinte'}`);
+                })
+                .catch(error => {
+                    console.error("Erreur:", error);
+                    alert("Connexion impossible.");
+                });
+        }
+    </script>
+
+</body>
+</html>
